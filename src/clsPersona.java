@@ -13,23 +13,24 @@ import java.awt.TextArea;
  */
 public class clsPersona {
     clsFunciones clsF = new clsFunciones();
-    clsMenu clsM = new clsMenu();
     private String identificacion;
     private String nombre;
     private String apellidos;
-    private String password;
     private int edad;
-   
-    
-    
-    public clsPersona(String identificacion, String nombre, String apellidos, int edad, String password) {
+    private String estado;
+
+    public clsPersona(String identificacion, String nombre, String apellidos, int edad, String estado) {
         this.identificacion = identificacion;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.edad = edad;
-        this.password = password;
-        
+        this.estado = estado;
     }
+   
+    
+    
+    
+    
     
 
     public clsPersona() {
@@ -61,13 +62,14 @@ public class clsPersona {
         this.edad = edad;
     }
 
-    public String getPassword() {
-        return password;
+    public String getEstado() {
+        return estado;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
+
 
     
 
@@ -81,14 +83,14 @@ public class clsPersona {
     
     public boolean llenarBDPersona(clsPersona personas[], int cantP) {
         String identificacion = clsF.recibeString("Digite la identificacion");
-        String password = clsF.recibeString("Digite la contraseña");
         String nombre = clsF.recibeString("Digite el nombre");
         String apellidos = clsF.recibeString("Digite los apellidos");
         int edad = clsF.recibeInt("Digite la edad");
+        String estado = clsF.recibeString("Activo/inactivo");
         
         
 
-        clsPersona nuevaPersona = new clsPersona(identificacion, nombre, apellidos, edad, password);
+        clsPersona nuevaPersona = new clsPersona(identificacion, nombre, apellidos, edad, estado);
         personas[cantP] = nuevaPersona;
 
         return true;
@@ -116,9 +118,6 @@ public class clsPersona {
     }
 
     public int editarPersona(clsPersona personas[], int cantP) {
-        //0 - se presenta un error
-        //1 - se realiza una edición
-        //2 - no hubieron coincidencias
         String buscarIdenti = clsF.recibeString("Digite la identificación que desea buscar");
         int poscBuscar = -1;
         for (int i = 0; i < cantP; i++) {
@@ -136,7 +135,7 @@ public class clsPersona {
                         + "A. Nombre"
                         + "\nB. Apellidos"
                         + "\nC. Edad"
-                        + "\nE. Estado Civil"
+                        + "\nE. Estado "
                         + "\nS. Salir");
                 switch (opcion) {
                     case 'A':
@@ -149,7 +148,7 @@ public class clsPersona {
                         personas[poscBuscar].setEdad(clsF.recibeInt("Digite la nueva edad"));
                         break;
                     case 'E':
-                        
+                        personas[poscBuscar].setEstado(clsF.recibeString("Actvio/inactivo"));
                         break;
                     case 'S':
                         break;
@@ -171,8 +170,7 @@ public class clsPersona {
                     + "Nombre: " +personas[i].nombre + "\n"
                     + "Apellidos: " +personas[i].apellidos + "\n"
                     + "Edad: " + personas[i].edad + "\n"
-                    + "Estado Civil: " + personas[i].password + "\n"
-                    + "Mascotas: \n";
+                    + "Estado: " + personas[i].estado + "\n";
       
         }
         
@@ -192,32 +190,17 @@ public class clsPersona {
             clsF.imprimeMensaje("No se encontraron coincidencias");
         } else {
             clsF.imprimeMensaje("Identificacion: "+personas[poscBuscar].getIdentificacion()
-                                + "\nNombre: "+personas[poscBuscar].getNombre()
-                                + "\nApellidos: "+personas[poscBuscar].getApellidos()
-                                + "\nEdad: "+personas[poscBuscar].getEdad()
-                                + "\nContraseña: "+personas[poscBuscar].getPassword()
+                                + "\tNombre: "+personas[poscBuscar].getNombre()
+                                + "\tApellidos: "+personas[poscBuscar].getApellidos()
+                                + "\tEdad: "+personas[poscBuscar].getEdad()
+                                + "\tEstado: " + personas[poscBuscar].getEstado() + "\n"
                                 + "");
         }
     }
-    public void login(clsPersona personas[], int cantP){
-        String identificacionT = clsF.recibeString("Digite la identificación");
-        String passwordT = clsF.recibeString("Digite la contraseña");
-        int poscBuscar = -1;
-        for (int i = 0; i < cantP; i++) {
-            if (personas[i].getIdentificacion().equalsIgnoreCase(identificacionT) && personas[i].getPassword().equalsIgnoreCase(passwordT) ) {
-                poscBuscar = i;
-                clsF.imprimeMensaje("login correcto");
-                clsM.menuPrincipal();
-                break;
-            }
-        }
-        if (poscBuscar == -1) {
-            clsF.imprimeMensaje("No se encontraron coincidencias");
-        }
-    }
+    
     @Override
     public String toString() {
-        return identificacion + "\t" + nombre + "\t" + apellidos + "\t" + edad + password+"\t";
+        return identificacion + "\t" + nombre + "\t" + apellidos + "\t" + edad;
     }
 
     public String getIdentificacion() {
